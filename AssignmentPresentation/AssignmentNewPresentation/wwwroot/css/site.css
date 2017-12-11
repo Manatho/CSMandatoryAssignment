@@ -1,0 +1,22 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.panel-default > .panel-heading {
+    color: #ffffff;
+    background-color: #333;
+    border-color: #333;
+}
+
+
+.panel-default {
+    border-color: #333;
+}
