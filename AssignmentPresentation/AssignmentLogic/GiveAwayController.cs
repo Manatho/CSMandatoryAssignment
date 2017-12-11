@@ -15,14 +15,12 @@ namespace AssignmentLogic
 
         public GiveAwayController(string fileLocation)
         {
-
-            submissionStorage = new FileSubmissionStorage(fileLocation);
-
             int[] codes = new int[100];
             for (int i = 0; i < codes.Length; i++)
                 codes[i] = i;
 
             codeStorage = new FileSerialcodeStorage(fileLocation, codes ,false);
+            submissionStorage = new FileSubmissionStorage(fileLocation);
         }
 
 
@@ -41,7 +39,7 @@ namespace AssignmentLogic
             if (temp != SubmitStates.Success)
                 return temp;
 
-            //Check for dublicates in storage
+            //Attempt storing the submission
             temp = submissionStorage.Store(submission);
             if (temp != SubmitStates.Success)
                 return temp;
@@ -56,14 +54,13 @@ namespace AssignmentLogic
 
         private SubmitStates ValidateSubmission(Submission submission)
         {
+            //Domainside validation, ensures that validation could be left
+            //out on the client side
             if (!codeStorage.CheckCode(submission.SerialNumber))
-            {
                 return SubmitStates.InvalidCode;
-            }
-
+            
             EmailAddressAttribute emailValidator = new EmailAddressAttribute();
             PhoneAttribute phoneValidator = new PhoneAttribute();
-
 
             if (submission.FirstName == "" || submission.SurName == "")
                 return SubmitStates.InvalidInformation;

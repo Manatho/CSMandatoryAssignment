@@ -15,6 +15,7 @@ public class FileSerialcodeStorageTest
     [SetUp]
     public void Init()
     {
+        //Creates a temporary folder to store the test files
         path = Directory.GetCurrentDirectory() + "\\SerialTest";
         Directory.CreateDirectory(path);
 
@@ -55,6 +56,7 @@ public class FileSerialcodeStorageTest
     [TearDown]
     public void Dispose()
     {
+        //Removes the temporary folder
         Directory.Delete(path, true);
     }
     

@@ -18,8 +18,5 @@ namespace AssignmentLogic
         Submission DrawWinner();
 
         ICollection<Submission> AllSubmissions();
-
-
-        
     }
 }

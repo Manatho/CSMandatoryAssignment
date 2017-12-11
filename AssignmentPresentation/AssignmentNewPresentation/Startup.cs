@@ -27,7 +27,7 @@ namespace AssignmentNewPresentation
         {
             services.AddTransient<IGiveAway, GiveAwayController>((ctx) =>
             {
-            Directory.CreateDirectory(Directory.GetCurrentDirectory()+"\\Files");
+                Directory.CreateDirectory(Directory.GetCurrentDirectory()+"\\Files");
                 return new GiveAwayController(Directory.GetCurrentDirectory() + "\\Files");
             });
             services.AddMvc();

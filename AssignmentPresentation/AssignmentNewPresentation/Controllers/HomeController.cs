@@ -28,9 +28,9 @@ namespace AssignmentNewPresentation.Controllers
         [HttpGet]
         public IActionResult Submit()
         {
+            //If error happened doing a submission attempt it will be in TempData
             if (TempData.ContainsKey("ErrorState"))
                 ViewData["ErrorState"] = TempData["ErrorState"].ToString();
-
 
             return View();
         }
@@ -40,6 +40,9 @@ namespace AssignmentNewPresentation.Controllers
         {
             SubmitStates state = _giveAway.Submit(submission);
 
+            //If a problem with the data was identified in the domain
+            //the error will be passed along, otherwise users will be
+            //shown all submissions
             if (state == SubmitStates.Success)
                 return Redirect("./index");
             else
@@ -47,9 +50,6 @@ namespace AssignmentNewPresentation.Controllers
                 TempData["ErrorState"] = state.ToString() + submission.Birthday;
                 return Redirect("./submit");
             }
-                
-            
-
         }
 
         public IActionResult Error()

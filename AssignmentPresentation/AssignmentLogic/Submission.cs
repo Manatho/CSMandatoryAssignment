@@ -6,6 +6,10 @@ namespace AssignmentLogic
     [Serializable]
     public class Submission
     {
+        //DataAnnotations have been used due to difficulties with
+        //other approaches, however given more time it would be
+        //appropriate to avoid GUI specific details in the domain object
+
         [Required]
         [Display(Name= "First Name")]
         public string FirstName { get;  set; }
@@ -49,6 +53,7 @@ namespace AssignmentLogic
             return SerialNumber + " | " + FirstName + " " + SurName + " | " + EmailAdress + " | " + PhoneNumber + " | " + Birthday;
         }
 
+        //Basic Hashcode and Equals methods
         public override int GetHashCode()
         {
             int hash = 5;

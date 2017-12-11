@@ -10,6 +10,8 @@ namespace AssignmentLogic.SerialcodeStorage
         public string FileLocation { get; private set; }
         public const string FileName = "Serialcodes.dat";
 
+        //Instead of reading the file whenever a request to check a code
+        //The codes are loaded into CurrentCodes for quicker access.
         HashSet<int> CurrentCodes = new HashSet<int>();
 
 
@@ -34,6 +36,17 @@ namespace AssignmentLogic.SerialcodeStorage
             return CurrentCodes.Contains(code);
         }
 
+        public void SetCodes(params int[] codes)
+        {
+            using (var writer = new BinaryWriter(File.Open(FileLocation, FileMode.Create)))
+            {
+                foreach (int c in codes)
+                    writer.Write(c);
+            }
+
+            CurrentCodes = AllCodesFromFile();
+        }
+
         private HashSet<int> AllCodesFromFile()
         {
             HashSet<int> codes = new HashSet<int>();
@@ -50,17 +63,6 @@ namespace AssignmentLogic.SerialcodeStorage
             }
 
             return codes;
-        }
-
-        public void SetCodes(params int[] codes)
-        {
-            using (var writer = new BinaryWriter(File.Open(FileLocation, FileMode.Create)))
-            {
-                foreach (int c in codes)
-                    writer.Write(c);
-            }
-
-            CurrentCodes = AllCodesFromFile();
         }
     }
 }

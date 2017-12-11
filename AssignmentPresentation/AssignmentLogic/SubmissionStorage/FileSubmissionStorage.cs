@@ -11,6 +11,9 @@ namespace AssignmentLogic.SubmissionStorage
         public string FileLocation { get; private set; }
         public const string FileName = "Submissions.dat";
 
+        //Instead of reading the file whenever to check for dublicate
+        //codes in submissions the submitted codes are loaded into
+        //existingSerialNumbers
         private HashSet<int> existingSerialNumbers;
 
         public FileSubmissionStorage(string location)
@@ -28,13 +31,17 @@ namespace AssignmentLogic.SubmissionStorage
 
         public SubmitStates Store(params Submission[] submissions)
         {
-            if (submissions.Distinct().Count() != submissions.Length)
+            //Checks that there are no duplicates serialsnumbers in the submitted elements
+            if (submissions.GroupBy(s => s.SerialNumber).Select(s => s.First()).Count() != submissions.Length)
                 return SubmitStates.Duplicate;
 
+            //Check the submissions against existing submissions
             foreach (Submission s in submissions)
                 if (SerialAlreadyExists(s))
                     return SubmitStates.Duplicate;
 
+
+            //Appends the new submissions to the existing file rather than overriding it.
             using (FileStream stream = new FileStream(FileLocation, FileMode.Append))
             {
                 IFormatter formatter = new BinaryFormatter();
@@ -75,6 +82,9 @@ namespace AssignmentLogic.SubmissionStorage
 
         public bool Remove(int serialNumber)
         {
+            //As options to remove a specific part of the submissions file
+            //was not feasible the submissions are fetched and rewritten to 
+            //a new file.
             List<Submission> submissions = AllSubmissionFromFile();
             if (submissions.RemoveAll(s => s.SerialNumber == serialNumber) == 1)
             {
@@ -84,8 +94,6 @@ namespace AssignmentLogic.SubmissionStorage
                 return true;
             }
             return false;
-
-            
         }
 
         private List<Submission> AllSubmissionFromFile()
@@ -97,7 +105,6 @@ namespace AssignmentLogic.SubmissionStorage
                 IFormatter bFormatter = new BinaryFormatter();
                 while (stream.Position != stream.Length)
                     submissions.Add((Submission)bFormatter.Deserialize(stream));
-                
             }
 
             return submissions;

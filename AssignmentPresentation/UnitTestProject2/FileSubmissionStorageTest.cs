@@ -40,9 +40,14 @@ public class FileSubmissionStorageTest
     [Test]
     public void StoreDuplicatesTest()
     {
+        //Store with different submissions with same serisal
+        Assert.AreEqual(SubmitStates.Duplicate, submissionStorage.Store(sub1, dub1));
+        var allSubmissions = submissionStorage.FindAll();
+        Assert.That(allSubmissions, Is.EquivalentTo(new Submission[0]));
+
         //Store with several params with some dublicates
         Assert.AreEqual(SubmitStates.Duplicate, submissionStorage.Store(sub1, sub2, sub3, sub1, sub2, sub3, dub1));
-        var allSubmissions = submissionStorage.FindAll();
+        allSubmissions = submissionStorage.FindAll();
         Assert.That(allSubmissions, Is.EquivalentTo(new Submission[0]));
 
         //Store with single elements
