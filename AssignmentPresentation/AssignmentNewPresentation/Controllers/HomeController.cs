@@ -47,7 +47,7 @@ namespace AssignmentNewPresentation.Controllers
                 return Redirect("./index");
             else
             {
-                TempData["ErrorState"] = state.ToString() + submission.Birthday;
+                TempData["ErrorState"] = state.ToString();
                 return Redirect("./submit");
             }
         }
